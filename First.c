@@ -1,6 +1,11 @@
 #include <stdio.h>
 
 int main() {
-    printf("Hello, World!\n");
-    return 0;
+
+    int i;
+    printf("\nEnter number of operation (1 - 7): ");
+    scanf("%d",&i);
+    printf("\nThe command is not implemented",i);
+
 }
+
