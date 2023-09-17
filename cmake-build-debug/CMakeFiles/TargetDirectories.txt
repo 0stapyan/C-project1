@@ -1,0 +1,3 @@
+/Users/ostapturash/Documents/unik/programming paradigms/C-project1/cmake-build-debug/CMakeFiles/C_project1.dir
+/Users/ostapturash/Documents/unik/programming paradigms/C-project1/cmake-build-debug/CMakeFiles/edit_cache.dir
+/Users/ostapturash/Documents/unik/programming paradigms/C-project1/cmake-build-debug/CMakeFiles/rebuild_cache.dir
