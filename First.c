@@ -66,7 +66,6 @@ int main() {
                 printf("Text has been saved successfully\n");
             }
         }
-
         if (choice == 5) {
             // Print current text for each line
             printf("Current Text:\n");
@@ -77,6 +76,74 @@ int main() {
                 printf("\n");
             }
         }
+        if (choice == 6) {
+            int lineIndex, symbolIndex;
+            printf("Choose line and symbol index: ");
+            scanf("%d %d", &lineIndex, &symbolIndex);
+
+            if (lineIndex >= 0 && lineIndex <= currentLine && symbolIndex >= 0) {
+                char input[100];
+                printf("Enter text to insert: ");
+                scanf(" %[^\n]", input); // Read a line of text (including spaces)
+
+                // Визначення розміру поточного рядка
+                int currentLineSize = 0;
+                for (int j = 0; j < textCounts[lineIndex]; j++) {
+                    currentLineSize += strlen(textArrays[lineIndex][j]);
+                }
+
+                // Перевірка, чи індекс вставки не перевищує розмір поточного рядка
+                if (symbolIndex <= currentLineSize) {
+                    // Вставка тексту в поточний рядок за вказаними індексами
+                    int currentSymbolIndex = 0;
+                    for (int j = 0; j < textCounts[lineIndex]; j++) {
+                        int lineLength = strlen(textArrays[lineIndex][j]);
+                        if (currentSymbolIndex + lineLength >= symbolIndex) {
+                            // Знайдено місце для вставки
+                            int insertIndex = symbolIndex - currentSymbolIndex;
+                            char *newLine = malloc(lineLength + strlen(input) + 1);
+                            strncpy(newLine, textArrays[lineIndex][j], insertIndex);
+                            strcpy(newLine + insertIndex, input);
+                            strcpy(newLine + insertIndex + strlen(input), textArrays[lineIndex][j] + insertIndex);
+                            free(textArrays[lineIndex][j]);
+                            textArrays[lineIndex][j] = newLine;
+                            textCounts[lineIndex]++;
+                            break;
+                        }
+                        currentSymbolIndex += lineLength;
+                    }
+                    printf("Text inserted successfully\n");
+                } else {
+                    printf("Symbol index is out of range\n");
+                }
+            } else {
+                printf("Invalid line index\n");
+            }
+        }
+
+        if (choice == 7) {
+            char search[100];
+            printf("Enter text to search: ");
+            scanf(" %[^\n]", search); // Read a line of text (including spaces)
+
+            printf("Text is present in these positions:\n");
+
+            // Пошук введеного тексту у поточному тексті
+            for (int i = 0; i <= currentLine; i++) {
+                for (int j = 0; j < textCounts[i]; j++) {
+                    char *found = strstr(textArrays[i][j], search);
+                    while (found != NULL) {
+                        // Виведення позиції знайденого тексту
+                        int position = found - textArrays[i][j];
+                        printf("Line %d, Symbol %d\n", i, position);
+
+                        // Пошук наступного входження
+                        found = strstr(found + 1, search);
+                    }
+                }
+            }
+        }
+
     }
 
 }
