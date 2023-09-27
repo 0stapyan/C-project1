@@ -66,6 +66,54 @@ int main() {
                 printf("Text has been saved successfully\n");
             }
         }
+
+        if (choice == 4) {
+            char fileName[100];
+            printf("Enter the file name for loading: ");
+            scanf(" %[^\n]", fileName);
+
+            FILE *file = fopen(fileName, "r");
+            if (file != NULL) {
+                for (int i = 0; i <= currentLine; i++) {
+                    for (int j = 0; j < textCounts[i]; j++) {
+                        free(textArrays[i][j]);
+                    }
+                    free(textArrays[i]);
+                }
+                free(textArrays);
+                free(textCounts);
+
+                textArrays = NULL;
+                textCounts = NULL;
+                currentLine = 0;
+
+                while (1) {
+                    char input[100];
+                    if (fgets(input, sizeof(input), file) == NULL) {
+                        break;
+                    }
+
+                    if (textArrays == NULL || currentLine >= textCounts) {
+                        textArrays = realloc(textArrays, (currentLine + 1) * sizeof(char **));
+                        textCounts = realloc(textCounts, (currentLine + 1) * sizeof(int));
+                        textCounts[currentLine] = 1;
+                        textArrays[currentLine] = malloc(textCounts[currentLine] * sizeof(char *));
+                    } else {
+                        textCounts[currentLine]++;
+                        textArrays[currentLine] = realloc(textArrays[currentLine], textCounts[currentLine] * sizeof(char *));
+                    }
+                    textArrays[currentLine][textCounts[currentLine] - 1] = strdup(input); // Використовуємо strdup для копіювання рядка
+
+                    currentLine++;
+                }
+
+                fclose(file);
+                printf("Text has been loaded successfully\n");
+            } else {
+                printf("Error opening file\n");
+            }
+        }
+
         if (choice == 5) {
             // Print current text for each line
             printf("Current Text:\n");
@@ -143,7 +191,8 @@ int main() {
                 }
             }
         }
-
+        if (choice == 8) {
+            system("clear");
+        }
     }
-
 }
